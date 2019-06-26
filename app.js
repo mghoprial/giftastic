@@ -1,7 +1,8 @@
+// create inital list of animals
+let animalList = ["cat", "dog", "chicken"];
+
 $(document).ready(function () {
 
-    // create inital list of animals
-    let animalList = ["cat", "liger", "chicken"];
     renderButtons(animalList);
     // onClick submit run getGiphy function
     $("#submitAnimal").on('click', function () {
@@ -9,34 +10,15 @@ $(document).ready(function () {
         let userInput = $("#userInput").val();
         // getGiphy(userInput);
         let newAnimal = $("input").eq(0).val();
-
-        if (newAnimal.length > 2) {
+        console.log('>>>>', newAnimal)
+        if (newAnimal.length > 2) { // check user's input
             animalList.push(newAnimal);
         }
         renderButtons(animalList);
         getGiphy(userInput);
-
-
-    })
-    // onClick animalBtn run getGiphy function
-    $(document).on("click", ".animalBtn", function () {
-        let input = $(this).text();
-        getGiphy(input);
-
-        console.log("animalBtn eventhandler");
-        let state = $(this).attr("data-state");
-
-        if (state === "still") {
-            $(this).attr("src", $(this).attr("data-animate"));
-        }
-        else {
-            $(this).attr("src", $(this).attr("data=still"));
-            $(this).attr("data-state", "still");
-        }
     });
+
     // for each animal, create a button and set its text to the current animal
-
-
     function renderButtons(arrayOfAnimals) {
         console.log("renderButtons");
         $("#animalButton").empty();
@@ -47,21 +29,21 @@ $(document).ready(function () {
             animalButtons.attr("class", "animalBtn");
             // get an element by ID name and append animalButtons on onto that element
             $("#animalButton").append(animalButtons);
-
         });
     }
 
-
     // if the event.target.onclick === true run the getGiphy function on the current button
-
     function getGiphy(searchTerm) {
         console.log("getGiphy");
         console.log(searchTerm);
 
-        animalList.push(searchTerm)
         let API_KEY = "zuvJBFpNQACuT3Cy6xLLx1FlvLh20lXJ";
         let queryUrl = "http://api.giphy.com/v1/gifs/search?api_key=" + API_KEY + "&q=" + searchTerm + "t&limit=25&offset=0&rating=G&lang=en";
-        $.ajax({ url: queryUrl, methed: "GET" }).then(function (response) {
+
+        $.ajax({
+            url: queryUrl,
+            method: "GET"
+        }).then(function (response) {
             console.log(response);
 
             let results = response.data;
@@ -92,32 +74,55 @@ $(document).ready(function () {
 
     }
 
+
+
+    // onClick animalBtn run getGiphy function
+    $("#images").on("click", ".animal-image", function () {
+
+
+        console.log("animalBtn eventhandler");
+        let state = $(this).attr("data-state");
+
+        if (state === "still") {
+            $(this).attr("src", $(this).attr("data-animate"));
+        }
+        else {
+            $(this).attr("src", $(this).attr("data-still"));
+            $(this).attr("data-state", "still");
+        }
+
+    });
+
+
+
+
+
+
     //render giphys - function that takes the response from the API and creates elements using jquerry
     //images getresponse.image
-    //set attributes to said images 
-
-
-
+    //set attributes to said images
 
 
 
     //function that pulls images from giphy
 
-    $("#addAnimal").on('click', function () {
-        console.log("#addAnimal eventhandler");
-        $("#images").empty();
-        $(".animalButton").removeClass("active");
-        $(this).addClass("active");
+    // $("#addAnimal").on('click', function () {
+    //     console.log("#addAnimal eventhandler");
+    //     $("#images").empty();
+    //     $(".animalButton").removeClass("active");
+    //     $(this).addClass("active");
 
-        let type = $("#animal").val();
-        // let querryUrl = "https://api.giphy.com/v1/gifs/search?api_key=" + API_KEY + "+&q=" + type + "t&limit=25&offset=0&rating=G&lang=en";
+    //     let type = $("#animal").val();
+    //     // let querryUrl = "https://api.giphy.com/v1/gifs/search?api_key=" + API_KEY + "+&q=" + type + "t&limit=25&offset=0&rating=G&lang=en";
 
-        let querryUrl = "https://api.giphy.com/v1/gifs/search?api_key=" + API_KEY + "&q=" + type + "t&limit=25&offset=0&rating=G&lang=en";
-        // before API request
-        animalList.push(type);
-        console.log(animalList);
-        var animalButtons = $("<button>").text(animalList);
-        $("#animalButton").append(animalButtons);
-        // ============================
-    })
-})
+    //     let querryUrl = "https://api.giphy.com/v1/gifs/search?api_key=" + API_KEY + "&q=" + type + "t&limit=25&offset=0&rating=G&lang=en";
+    //     // before API request
+    //     animalList.push(type);
+    //     console.log(animalList);
+    //     var animalButtons = $("<button>").text(animalList);
+    //     $("#animalButton").append(animalButtons);
+    //     // ============================
+
+
+
+});
