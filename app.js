@@ -37,8 +37,9 @@ $(document).ready(function () {
         console.log("getGiphy");
         console.log(searchTerm);
 
+        let CORS = 'https://cors-anywhere.herokuapp.com/'
         let API_KEY = "zuvJBFpNQACuT3Cy6xLLx1FlvLh20lXJ";
-        let queryUrl = "http://api.giphy.com/v1/gifs/search?api_key=" + API_KEY + "&q=" + searchTerm + "t&limit=25&offset=0&rating=G&lang=en";
+        let queryUrl = CORS + "http://api.giphy.com/v1/gifs/search?api_key=" + API_KEY + "&q=" + searchTerm + "t&limit=25&offset=0&rating=G&lang=en";
 
         $.ajax({
             url: queryUrl,
@@ -74,17 +75,24 @@ $(document).ready(function () {
 
     }
 
-
-
     // onClick animalBtn run getGiphy function
     $("#images").on("click", ".animal-image", function () {
 
+        /* <img 
+            src='www.animate.com' 
+            data-still='www.still.com' 
+            data-animate='www.animate.com' 
+            data-state='still'
+            class='animal-image'
+            >
+        */
 
         console.log("animalBtn eventhandler");
         let state = $(this).attr("data-state");
 
         if (state === "still") {
             $(this).attr("src", $(this).attr("data-animate"));
+            $(this).attr("data-state", "animate");
         }
         else {
             $(this).attr("src", $(this).attr("data-still"));
@@ -93,9 +101,14 @@ $(document).ready(function () {
 
     });
 
+    $("#animalButton").on("click", ".animalBtn", function () {
+        let searchTerm = $(this).text();
+        console.log('>>>>', searchTerm);
+        $("#images").empty();
+        getGiphy(searchTerm);
 
 
-
+    })
 
 
     //render giphys - function that takes the response from the API and creates elements using jquerry
